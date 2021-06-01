@@ -14,7 +14,7 @@ server.listen()
 clients = []
 nicknames = []
 
-#Sending messages to all connected clients
+#Sending messages to all connected clients except the one sent message
 def broadcast(message, index):
     for client in clients:
         if(clients.index(client)!=index):
@@ -25,7 +25,7 @@ def handle(client):
     while(True):
         try:
             #broadcasting messages
-            message = client.recv(1024)
+            message = client.recv(2048)
             index = clients.index(client)
             broadcast(message, index)
         except:
@@ -46,7 +46,7 @@ def receive():
 
         #request and store nickname
         client.send('NICK'.encode('ascii'))
-        nickname = client.recv(1024).decode('ascii')
+        nickname = client.recv(2048).decode('ascii')
         nicknames.append(nickname)
         clients.append(client)
 
@@ -54,7 +54,7 @@ def receive():
         print("your nickname is {}".format(nickname))
         index = clients.index(client)
         broadcast("{} joined the server!".format(nickname).encode('ascii'), index)
-        client.send("Successfully connected to server!".encode('ascii'))
+        #client.send("Successfully connected to server!".encode('ascii'))
 
         #start handling thread for client
         thread = threading.Thread(target=handle, args=(client,))

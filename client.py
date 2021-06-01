@@ -1,5 +1,6 @@
 import socket
 import threading
+import time
 
 #entering nickname
 nickname = input("Choose your nickname: ")
@@ -16,11 +17,11 @@ def receive():
         try:
             # recieve message from server
             # if 'NICK' then send nickname
-            message = client.recv(1024).decode('ascii')
+            message = client.recv(2048).decode('ascii')
             if(message == "NICK"):
                 client.send(nickname.encode('ascii'))
             else:
-                print(message)
+                print('\r{}\n{} : '.format(message, nickname))
         except:
             #close connection when error
             print("An error occured!")
@@ -30,8 +31,9 @@ def receive():
 # sending messages to server
 def write():
     while(True):
-        message = '{}: {}'.format(nickname, input(''))
-        client.send(message.encode('ascii'))
+        time.sleep(0.5)
+        message = input('')
+        client.send('{} : {}'.format(nickname, message).encode('ascii'))
 
 #starting threads for listening and writing
 receive_thread = threading.Thread(target=receive)
