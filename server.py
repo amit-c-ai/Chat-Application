@@ -1,9 +1,27 @@
 import socket
 import threading
+import sys
+
+#list of special commands
+commands = {
+  " /train/": "sl",
+  " /cowsay": "cowsay",
+  " /xcowsay": "xcowsay",
+  " /cowthink": "cowthink"
+}
+
+def help():
+    print("Usage: python3 server.py host port")
+    print("Ex: python3 server.py 127.0.0.1 1060")
+    exit()
+
 
 #data for connection
-host = input("Enter host address: ")
-port = int(input("Enter port(unreserved) number: "))
+if(len(sys.argv)==3):
+    host = sys.argv[1]
+    port = int(sys.argv[2])
+else:
+    help()
 
 #Starting the server
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,9 +34,21 @@ nicknames = []
 
 #Sending messages to all connected clients except the one sent message
 def broadcast(message, index):
-    for client in clients:
-        if(clients.index(client)!=index):
-            client.send(message)
+    if(len(message.decode('ascii').split(':')) == 2):
+        msg = message.decode('ascii').split(':')[1]
+    
+        if(msg in commands or msg.split('?')[0] in commands or msg=="emogi -help"):
+            for client in clients:
+                client.send(message)
+        else:
+            for client in clients:
+                if(clients.index(client)!=index):
+                    client.send(message)
+
+    else:
+        for client in clients:
+            if(clients.index(client)!=index):
+                client.send(message)
 
 #Handling messages from clients
 def handle(client):
@@ -34,6 +64,7 @@ def handle(client):
             client.close()
             nickname = nicknames[index]
             broadcast('{} left!'.format(nickname).encode('ascii'), index)
+            print('{} left the server'.format(nickname))
             nicknames.remove(nickname)
             break
 
@@ -51,7 +82,7 @@ def receive():
         clients.append(client)
 
         #print and broadcast nickname
-        print("your nickname is {}".format(nickname))
+        print("Joined person's nickname is {}".format(nickname))
         index = clients.index(client)
         broadcast("{} joined the server!".format(nickname).encode('ascii'), index)
         #client.send("Successfully connected to server!".encode('ascii'))
