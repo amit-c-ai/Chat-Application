@@ -21,7 +21,7 @@ def help():
     print("Ex: python3 client.py 192.168.5.103 5555")
 
 def getDefaultName():
-    nickname=subprocess.check_output(['whoami']).decode('ascii')[:-1]
+    nickname=subprocess.check_output(['whoami']).decode('UTF-8')[:-1]
     return nickname
 
 #entering nickname
@@ -53,10 +53,11 @@ client.connect((address, port))
 
 #list of special commands
 commands = {
-  " /train/": "sl",
-  " /cowsay": "cowsay",
-  " /xcowsay": "xcowsay",
-  " /cowthink": "cowthink"
+  " /train/"  : "sl",
+  " /cowsay"  : "cowsay",
+  " /xcowsay" : "xcowsay",
+  " /cowthink": "cowthink",
+  " /xeyes/"  : "xeyes",
 }
 
 #list of emogis
@@ -72,14 +73,14 @@ emogis = {
     "$slightly smiling face$": "\U0001F642",
     "$upside-down face$": "\U0001F643",
     "$winking face$": "\U0001F609",
+    "$smiling face$": "\U0000263A ",
     "$smiling face with smiling eyes$": "\U0001F60A",
     "$smiling face with halo$": "\U0001F607",
-    "$smiling face with 3 hearts$": "\U0001F970",
+    "$smiling face with 3 hearts$": "\U0001F970 ",
     "$smiling face with heart-eyes$": "\U0001F60D",
     "$star-struck$": "\U0001F929",
     "$face blowing a kiss$": "\U0001F618",
     "$kissing face$": "\U0001F617",
-    "$smiling face$": "\U0000263A",
     "$kissing face with closed eyes$": "\U0001F61A",
     "$kissing face with smiling eyes$": "\U0001F619",
     "$face savoring food$": "\U0001F60B",
@@ -113,16 +114,58 @@ emogis = {
     "$nauseated face$": "\U0001F922",
 }
 
+#emogi heading
+def heading():
+    print("\n ", "\t", end='')
+    for i in range(103):
+        if(i!=102):
+            print(bcolors.OKGREEN+"-", end='')    #- in first line
+        else:
+            print(bcolors.OKGREEN+"-")
+    print(" ", "\t|", end='')
+    for i in range(101):
+        if(i!=100):
+            print(" ", end='')                   #first space line
+        else:
+            print(" |")
+    print(" ", "\t|", end='')                    
+    for i in range(40):
+        print(" ", end='')                   #second space line
+    print("LIST OF EMOGI COMMANDS", end='')
+    for i in range(40):
+        if(i!=39):
+            print(" ", end='')
+        else:
+            print("|")
+    print(" ", "\t|", end='')
+    for i in range(101):
+        if(i!=100):
+            print(" ", end='')                   #third space line
+        else:
+            print(" |")
+    print(" ", "\t", end='')
+    for i in range(103):
+        if(i!=102):
+            print(bcolors.OKGREEN+"-", end='')
+        else:
+            print(bcolors.OKGREEN+"-")
+
+    print("", end='')
+
+
 #emogi help
 def emogihelp():
-    print(" ","\t",end='')
-    for i in range(46):
-        print(bcolors.OKGREEN+"-", end='')
-    print("")
-    for emogi in emogis:
-        print("\t", bcolors.OKGREEN+"|", bcolors.WHITE+' {:<33}'.format(emogi),": ", emogis[emogi], bcolors.OKGREEN +" |")
+    heading()
+
+    new = list(emogis)
+    for i in range(len(new)):
+        if(i%2==0):
+            print("\t", bcolors.OKGREEN+"|", bcolors.WHITE+' {:<33}'.format(new[i]),": ", emogis[new[i]], bcolors.OKGREEN +" |", end='')
+        else:
+            print("\t\t", bcolors.OKGREEN+"|", bcolors.WHITE+' {:<33}'.format(new[i]),": ", emogis[new[i]], bcolors.OKGREEN +" |")
+
     print(" ", "\t",end='')
-    for i in range(46):
+    for i in range(103):
         print(bcolors.OKGREEN+"-", end='')
     print("")
 
@@ -139,25 +182,39 @@ def receive():
         try:
             # recieve message from server
             # if 'NICK' then send nickname
-            message = client.recv(2048).decode('ascii')
-            modify(message)
-            if(len(message.split(':'))==2):
+            message = client.recv(2048).decode('UTF-8')
+            if(message == "NICK"):
+                client.send(nickname.encode('UTF-8'))
+            elif(message == "First line"):
+                print('-----[' + bcolors.WARNING + ' {} : '.format(nickname), end='') 
+
+            elif(len(message.split(':'))==2):
                 msg = message.split(':')[1]
                 if(msg in commands):
                     subprocess.run([commands[msg]])
                 elif(msg.split('?')[0] in commands):
                     subprocess.run([commands[msg.split('?')[0]], msg.split('?')[1][:-1]])
-                if(msg == " emogi -help"):
+                elif(len(msg.split('?')[0].split('!'))==3):
+                    new_msg = msg.split('?')[0].split('!')
+                    if(new_msg[1]=="-f"):
+                        print("-----[ {}: ".format(message.split(':')[0]))
+                        subprocess.run([new_msg[0][2:], new_msg[1], new_msg[2], msg.split('?')[1][:-1]])
+                elif(msg == " emogi -help"):
                     emogihelp()
-                    
-            if(message == "NICK"):
-                client.send(nickname.encode('ascii'))            
+                elif(msg == " cowsay -help"):
+                    print("\nUsage: /cowsay!-f!animal?message/")
+                    print("Ex: /cowsay!-f!bunny?I love carrot/")
+                    subprocess.run(["cowsay", "-l", "|", "cowsay"])
+                    print("\n")
+                else:
+                    print(bcolors.OKBLUE + '\r-----[' + bcolors.OKGREEN + '{}'.format(message) + bcolors.OKBLUE + ' ]-----\n-----[' + bcolors.WARNING + ' {} : '.format(nickname), end='')
+                               
             else:
-                final = str(bcolors.OKBLUE + '\r-----[' + bcolors.OKGREEN + '{}'.format(message) + bcolors.OKBLUE + ' ]-----\n-----[' + bcolors.WARNING + ' {} : '.format(nickname))
-                print("{:>120}".format(final), end='')
+                print(bcolors.OKBLUE + '\r-----[' + bcolors.OKGREEN + '{}'.format(message) + bcolors.OKBLUE + ' ]-----\n-----[' + bcolors.WARNING + ' {} : '.format(nickname), end='')
+        
         except KeyboardInterrupt:  
             #close connection when error
-            #client.send("{} left!".format(nickname).encode('ascii'))
+            #client.send("{} left!".format(nickname).encode('UTF-8'))
             print("Thanks for Using the Application!")
             client.close()
             break
@@ -166,8 +223,15 @@ def receive():
 def write():
     while(True):
         time.sleep(0.5)
-        message = input('')
-        client.send('{} : {}'.format(nickname, message).encode('ascii'))
+        old_message = input('')
+        message = modify(old_message)
+        if(message!=old_message):
+            print("emogified message: {}".format(message))
+        if(message=="!clear"):
+            subprocess.run(["clear"])
+            print('-----[' + bcolors.WARNING + ' {} : '.format(nickname), end='')
+        else:
+            client.send('{} : {}'.format(nickname, message).encode('UTF-8'))
 
 #starting threads for listening and writing
 receive_thread = threading.Thread(target=receive)

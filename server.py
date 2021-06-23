@@ -34,12 +34,17 @@ nicknames = []
 
 #Sending messages to all connected clients except the one sent message
 def broadcast(message, index):
-    if(len(message.decode('ascii').split(':')) == 2):
-        msg = message.decode('ascii').split(':')[1]
+    if(len(message.decode('UTF-8').split(':')) == 2):
+        msg = message.decode('UTF-8').split(':')[1]
     
-        if(msg in commands or msg.split('?')[0] in commands or msg=="emogi -help"):
+        if(msg in commands or msg.split('?')[0] in commands or msg==" emogi -help" or msg==" cowsay -help"):
             for client in clients:
                 client.send(message)
+        elif(len(msg.split('?')[0].split('!'))==3):
+            new_msg = msg.split('?')[0].split('!')
+            if(new_msg[1]=="-f"):
+                for client in clients:
+                    client.send(message)
         else:
             for client in clients:
                 if(clients.index(client)!=index):
@@ -63,7 +68,7 @@ def handle(client):
             clients.remove(client)
             client.close()
             nickname = nicknames[index]
-            broadcast('{} left!'.format(nickname).encode('ascii'), index)
+            broadcast('{} left!'.format(nickname).encode('UTF-8'), index)
             print('{} left the server'.format(nickname))
             nicknames.remove(nickname)
             break
@@ -76,16 +81,17 @@ def receive():
         print("connected with {}".format(str(address)))
 
         #request and store nickname
-        client.send('NICK'.encode('ascii'))
-        nickname = client.recv(2048).decode('ascii')
+        client.send('NICK'.encode('UTF-8'))
+        nickname = client.recv(2048).decode('UTF-8')
         nicknames.append(nickname)
         clients.append(client)
+        client.send('First line'.encode('UTF-8'))
 
         #print and broadcast nickname
         print("Joined person's nickname is {}".format(nickname))
         index = clients.index(client)
-        broadcast("{} joined the server!".format(nickname).encode('ascii'), index)
-        #client.send("Successfully connected to server!".encode('ascii'))
+        broadcast("{} joined the server!".format(nickname).encode('UTF-8'), index)
+        #client.send("Successfully connected to server!".encode('UTF-8'))
 
         #start handling thread for client
         thread = threading.Thread(target=handle, args=(client,))
