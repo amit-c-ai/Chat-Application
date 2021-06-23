@@ -45,9 +45,9 @@ Now server should be hosted at localhost 1060 and client should connect at ngrok
   
 * __features:__
   * _large number of peope can join the server_
-  * _as it uses tcp to connect, it is guaranteed that no messages will be lost
+  * _as it uses tcp to connect, it is guaranteed that no messages will be lost_
   * _emogi supported texts using some commands (type "emogi -help" without quotes)_
-  * _supports some exciting linux commands, use following commands in chat:_
+  * _supports some funny linux commands, use following commands in chat:_
     * /train/
     * /cowsay?Hello/
     * cowsay -help
@@ -60,9 +60,9 @@ Now server should be hosted at localhost 1060 and client should connect at ngrok
    * _if we write message on out terminal and someone's message comes then is get printed on the line we were writing_
    
  * __to prevent 2nd bug:_
-   * _open two terminal and redirect output of 1st terminal to 2nd
-   * run client script on 1st terminal and write your messages there
-   * see others messages on 2nd terminal
-   * you can achieve this using [tty command](https://unix.stackexchange.com/questions/261531/how-to-send-output-from-one-terminal-to-another-without-making-any-new-pipe-or-f)
+   * _open two terminal and redirect output of 1st terminal to 2nd_
+   * _run client script on 1st terminal and write your messages there_
+   * _see others messages on 2nd terminal_
+   * _you can achieve this using [tty command](https://unix.stackexchange.com/questions/261531/how-to-send-output-from-one-terminal-to-another-without-making-any-new-pipe-or-f)_
   
   
