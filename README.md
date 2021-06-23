@@ -2,20 +2,20 @@
 
 ![alt text](https://github.com/amit-c-ai/Chat-Application/blob/main/images/demo.png)
 
-This is an implementation of server-client [Chat-Application](https://github.com/amit-c-ai/Chat-Application) using socket programming and some concepts
+_This is an implementation of server-client [Chat-Application](https://github.com/amit-c-ai/Chat-Application) using socket programming and some concepts
 of multi-threading.
 Basic idea of creating a chat-room is that create a [server](https://github.com/amit-c-ai/Chat-Application/blob/main/server.py) script and a [client](https://github.com/amit-c-ai/Chat-Application/blob/main/client.py) script. Server will act as a mediator, all clients will send messages to server and then
-server will send messages to all clients connected to it.
+server will send messages to all clients connected to it._
 
-At this point everything works fine but on localhost. We can't send messages to person whose ip-address is not in out network.
-Reason:
+_At this point everything works fine but on localhost. We can't send messages to person whose ip-address is not in out network.
+Reason:_
 
    To connect to an ip-address, it should be a public ip for example google, amazon, etc. But our ip-address is local provided by our
    ISP(Internet Service Provider). So we to connect to the server you created it should be hosted on public domain.
    
-This problem is solved by using ngrok, it basically gives us a public ip and tunnels the traffic at this ip to the post number we mention.
+_This problem is solved by using ngrok, it basically gives us a public ip and tunnels the traffic at this ip to the post number we mention.
 We host the server at our localhost and some port (you'll understand after the example) and ngrok will tunnel the clients at its public ip
-to our localhost and mentioned port. We just need to share public ip and port (given by ngrok) to our friends.
+to our localhost and mentioned port. We just need to share public ip and port (given by ngrok) to our friends._
    
 * __installation:__ 
   * _clone this repository_
