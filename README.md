@@ -59,7 +59,7 @@ Now server should be hosted at localhost 1060 and client should connect at ngrok
    * _if only one client is connected and sends message, then it will go in infinite loop and server is crashed_
    * _if we write message on out terminal and someone's message comes then is get printed on the line we were writing_
    
- * __to prevent 2nd bug:_
+ * __to prevent 2nd bug:__
    * _open two terminal and redirect output of 1st terminal to 2nd_
    * _run client script on 1st terminal and write your messages there_
    * _see others messages on 2nd terminal_
