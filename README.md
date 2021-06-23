@@ -14,7 +14,7 @@ Reason:_
     But our ip-address is local provided by our ISP(Internet Service Provider). So clients to
     connect to the server you created, it should be hosted on public domain.
    
-_This problem is solved by using ngrok, it basically gives us a public ip and tunnels the traffic at this ip to the post number we mention.
+_This problem is solved by using ngrok, it basically gives us a public ip and tunnels the traffic at this ip to the port number we mention.
 We host the server at our localhost and some port (you'll understand after the example) and ngrok will tunnel the clients at its public ip
 to our localhost and mentioned port. We just need to share public ip and port (given by ngrok) to our friends._
    
