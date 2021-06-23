@@ -1,5 +1,7 @@
 # Chat-Application #
 
+![alt text](https://github.com/amit-c-ai/Chat-Application/blob/main/images/demo.png)
+
 This is an implementation of server-client [Chat-Application](https://github.com/amit-c-ai/Chat-Application) using socket programming and some concepts
 of multi-threading.
 Basic idea of creating a chat-room is that create a [server](https://github.com/amit-c-ai/Chat-Application/blob/main/server.py) script and a [client](https://github.com/amit-c-ai/Chat-Application/blob/main/client.py) script. Server will act as a mediator, all clients will send messages to server and then
@@ -25,7 +27,7 @@ to our localhost and mentioned port. We just need to share public ip and port (g
   * _first complete the procedure mentioned [here](https://ngrok.com/download)_
   * _go to ngrok directory and write "./ngrok tcp 1060" without quotes_
 
-After this you'll see screen like [this](https://github.com/amit-c-ai/Chat-Application/blob/main/ngrok.jpg)
+After this you'll see screen like [this](https://github.com/amit-c-ai/Chat-Application/blob/main/images/ngrok.png)
 
 highlighted line in image is the public domain and port(seperated by ':') you got and it is directed to localhost port 1060.
 Now server should be hosted at localhost 1060 and client should connect at ngrok-domain and port.
@@ -33,24 +35,24 @@ Now server should be hosted at localhost 1060 and client should connect at ngrok
 * __hosting server:__
   * _open a new terminal in cloned directory_
   * _command: python3 server.py 0.0.0.0 1060_
-  * _server will start listening, [ex]()_
+  * _server will start listening, [ex](https://github.com/amit-c-ai/Chat-Application/blob/main/images/server.png)_
  
 * __join server as client:__
   * _open a new terminal in cloned directory_
   * _command: python3 client.py ngrok-domain port nickname_
-  * _[Example]()_
+  * _[Example](https://github.com/amit-c-ai/Chat-Application/blob/main/images/client.png)_
   
 * __features:__
   * _large number of peope can join the server_
   * _as it uses tcp to connect, it is guaranteed that no messages will be lost
   * _emogi supported texts using some commands (type "emogi -help" without quotes)_
   * _supports some exciting linux commands, use following commands in chat:_
-   * /train/
-   * /cowsay?Hello/
-   * cowsay -help
-   * /xcowsay?hello/  (cowsay and xcowsay have same commands just use xcowsay in place of cowsay)
-   * /cowthink?hello/ (cowsay and cowthink have same commands just use cowthink in place of cowsay)
-   * /xeyes/
+    * /train/
+    * /cowsay?Hello/
+    * cowsay -help
+    * /xcowsay?hello/  (cowsay and xcowsay have same commands just use xcowsay in place of cowsay)
+    * /cowthink?hello/ (cowsay and cowthink have same commands just use cowthink in place of cowsay)
+    * /xeyes/
  
  * __bugs:__
    * _if only one client is connected and sends message, then it will go in infinite loop and server is crashed_
