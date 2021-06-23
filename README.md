@@ -11,8 +11,8 @@ _At this point everything works fine but on localhost. We can't send messages to
 Reason:_
 
     To connect to an ip-address, it should be a public ip for example google, amazon, etc. 
-    But our ip-address is local provided by our ISP(Internet Service Provider). So we to
-    connect to the server you created it should be hosted on public domain.
+    But our ip-address is local provided by our ISP(Internet Service Provider). So clients to
+    connect to the server you created, it should be hosted on public domain.
    
 _This problem is solved by using ngrok, it basically gives us a public ip and tunnels the traffic at this ip to the post number we mention.
 We host the server at our localhost and some port (you'll understand after the example) and ngrok will tunnel the clients at its public ip
